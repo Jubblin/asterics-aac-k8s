@@ -9,7 +9,7 @@
 ARG ASTERICS_REPO=https://github.com/asterics/Asterics-AAC.git
 ARG ASTERICS_REF=master
 
-FROM node:20-alpine AS build
+FROM node:24-alpine AS build
 ARG ASTERICS_REPO
 ARG ASTERICS_REF
 RUN apk add --no-cache git python3 make g++ \
