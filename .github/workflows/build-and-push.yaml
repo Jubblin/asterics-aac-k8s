@@ -5,6 +5,10 @@ on:
     paths:
       - "docker/**"
       - ".github/workflows/build-and-push.yaml"
+  pull_request:
+    paths:
+      - "docker/**"
+      - ".github/workflows/build-and-push.yaml"
   workflow_dispatch:
 
 permissions: {}
@@ -13,7 +17,35 @@ env:
   REGISTRY: ghcr.io
 
 jobs:
+  scan:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: frontend
+          - name: couchauth
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Hadolint
+        uses: hadolint/hadolint-action@2332a7b74a6de0dda2e2221d575162eba76ba5e5 # v3.3.0
+        with:
+          dockerfile: docker/${{ matrix.name }}/Dockerfile
+          config: .hadolint.yaml
+      - name: Trivy Dockerfile config
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          scan-type: config
+          scan-ref: docker/${{ matrix.name }}/Dockerfile
+          severity: CRITICAL,HIGH
+          exit-code: "1"
+          cache-dir: ${{ runner.temp }}/trivy-cache
+
   build:
+    needs: scan
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     permissions:
       contents: read

@@ -18,7 +18,8 @@ ARG ASTERICS_REF
 RUN apk add --no-cache git
 WORKDIR /app
 RUN git clone --depth 1 --branch "${ASTERICS_REF}" "${ASTERICS_REPO}" .
-RUN corepack enable && yarn install --frozen-lockfile --production
+RUN corepack enable && yarn install --frozen-lockfile --production \
+    && yarn cache clean
 
 EXPOSE 3000
 CMD ["node", "superlogin/start.js"]

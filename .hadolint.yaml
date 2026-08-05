@@ -1,0 +1,4 @@
+# Alpine apk package pins churn on every base-image rebuild; prefer
+# reproducible base tags (node:*-alpine / nginx:*-alpine) over pinning apk.
+ignored:
+  - DL3018

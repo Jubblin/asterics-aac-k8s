@@ -24,4 +24,4 @@ FROM nginx:1.31-alpine
 COPY --from=build /src/app/build /usr/share/nginx/html
 COPY docker/frontend/nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
-HEALTHCHECK --interval=30s --timeout=3s CMD wget -qO- http://localhost/ || exit 1
+HEALTHCHECK --interval=30s --timeout=3s CMD ["wget", "-qO-", "http://localhost/"]
