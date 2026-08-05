@@ -5,7 +5,6 @@ on:
     paths:
       - "k8s/**"
   push:
-    branches: [main]
     paths:
       - "k8s/**"
 
