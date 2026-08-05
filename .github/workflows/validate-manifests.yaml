@@ -1,0 +1,28 @@
+name: Validate Manifests
+
+on:
+  pull_request:
+    paths:
+      - "k8s/**"
+  push:
+    branches: [main]
+    paths:
+      - "k8s/**"
+
+jobs:
+  kustomize-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install kustomize
+        run: |
+          curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
+          sudo mv kustomize /usr/local/bin/
+      - name: Fake secrets for validation only
+        run: cp k8s/base/secrets.example.yaml k8s/base/secrets.yaml
+      - name: Build
+        run: kustomize build k8s/base > /tmp/rendered.yaml
+      - name: Validate with kubeconform
+        run: |
+          curl -sL https://github.com/yannh/kubeconform/releases/latest/download/kubeconform-linux-amd64.tar.gz | tar xz
+          ./kubeconform -summary -ignore-missing-schemas /tmp/rendered.yaml
