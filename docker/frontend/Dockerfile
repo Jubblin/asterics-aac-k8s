@@ -9,7 +9,7 @@
 ARG ASTERICS_REPO=https://github.com/asterics/Asterics-AAC.git
 ARG ASTERICS_REF=master
 
-FROM node:24-alpine AS build
+FROM node:24-alpine@sha256:44fce696f38ba8c987c4db89954051000bbd05ffd8d8659ba15ed4a8602e937f AS build
 ARG ASTERICS_REPO
 ARG ASTERICS_REF
 RUN apk add --no-cache git python3 make g++ \
@@ -20,7 +20,7 @@ RUN git clone --depth 1 --branch "${ASTERICS_REF}" "${ASTERICS_REPO}" . \
 # npm run build runs: jest && webpack --env production && getServiceWorkerCachePaths.js
     && npm run build
 
-FROM nginx:1.31-alpine
+FROM nginx:1.31-alpine@sha256:72aeb3308ef6cb3118242fb16389518923916dfa206e32d1a8377acc328b9870
 COPY --from=build /src/app/build /usr/share/nginx/html
 COPY docker/frontend/nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80

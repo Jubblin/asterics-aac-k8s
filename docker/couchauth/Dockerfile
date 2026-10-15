@@ -12,7 +12,7 @@
 ARG ASTERICS_REPO=https://github.com/asterics/Asterics-AAC.git
 ARG ASTERICS_REF=master
 
-FROM node:24-alpine
+FROM node:24-alpine@sha256:44fce696f38ba8c987c4db89954051000bbd05ffd8d8659ba15ed4a8602e937f
 ARG ASTERICS_REPO
 ARG ASTERICS_REF
 RUN apk add --no-cache git
