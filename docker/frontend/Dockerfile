@@ -20,7 +20,7 @@ RUN git clone --depth 1 --branch "${ASTERICS_REF}" "${ASTERICS_REPO}" . \
 # npm run build runs: jest && webpack --env production && getServiceWorkerCachePaths.js
     && npm run build
 
-FROM nginx:1.31-alpine@sha256:a3554c0d0b48177b1413c26e01f695334428020d9df01243fbae3e11cfd17417
+FROM nginx:1.31-alpine@sha256:785835ea65db4bba6f021acc0f3be91b0fef76a53fe41f8588c6698d2aed0606
 COPY --from=build /src/app/build /usr/share/nginx/html
 COPY docker/frontend/nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
