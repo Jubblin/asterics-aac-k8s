@@ -9,7 +9,7 @@
 ARG ASTERICS_REPO=https://github.com/asterics/Asterics-AAC.git
 ARG ASTERICS_REF=master
 
-FROM node:24-alpine@sha256:8a32c8cf649a49915a66e81e7a609223c708d0adabf288ee3f4077d765542f85 AS build
+FROM node:26-alpine@sha256:8996bb5821d62a8fd9bb27c1cb07462f3fdce6e47d640c6a881ead0b064ce216 AS build
 ARG ASTERICS_REPO
 ARG ASTERICS_REF
 RUN apk add --no-cache git python3 make g++ \
